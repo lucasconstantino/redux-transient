@@ -4,7 +4,7 @@
 
 ## Why?
 
-Having the possibility to attach/detach specific reducers from your [Redux](redux.js.org/) store is definitely not a common need. Nevertheless, I felt that, when using Redux as a simple UI state holder for [React](https://facebook.github.io/react/) apps, oftentimes it gets really boring to create actions and reducers and constants for all the minor changes the App performs. Most of the times I would just stop using the store and use [Recompose](https://github.com/acdlite/recompose/) tools instead, when the state is self contained to the component's life cycle. But now and then I still need to alter the store state, but have this logic only happen while the component is still mounted. That's why I created this lib.
+Having the possibility to attach/detach specific reducers to your [Redux](redux.js.org/) store after initialized is definitely not a common need. Nevertheless, I felt that, when using Redux as a simple UI state holder for [React](https://facebook.github.io/react/) apps, oftentimes it gets really boring to create actions and reducers and constants for all the minor changes the App performs. Most of the times I would just stop using the store and use [Recompose](https://github.com/acdlite/recompose/) tools instead, when the state is self contained to the component's life cycle. But now and then I still need to alter the store state, but have this logic only happen while the component is still mounted. That's why I created this lib.
 
 ## How?
 
