@@ -18,11 +18,12 @@ export const transientEnhancer = () => createStore => (reducer, preloaded, enhan
     ? null
     : reducers.splice(reducers.indexOf(reducer), 1)
 
-  // Middleware like interceptor to add/remove transient reducers.
+  // Middleware-like action interceptor to add/remove transient reducers.
   const dispatch = action => {
-    if (action.type === ADD_REDUCER) addReducer(action.reducer)
     if (action.type === REMOVE_REDUCER) removeReducer(action.reducer)
-    return originalDispatch(action)
+    const result = originalDispatch(action)
+    if (action.type === ADD_REDUCER) addReducer(action.reducer)
+    return result
   }
 
   return { ...store, dispatch }

@@ -28,7 +28,7 @@ describe('transientEnhancer', () => {
   it('should be possible to add transient reducers', () => {
     getStore().dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(2)
-    expect(reducers.transient).toHaveBeenCalledTimes(1)
+    expect(reducers.transient).toHaveBeenCalledTimes(0)
   })
 
   it('should not be possible to add same transient reducer twice', () => {
@@ -36,12 +36,13 @@ describe('transientEnhancer', () => {
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(3)
-    expect(reducers.transient).toHaveBeenCalledTimes(2)
+    expect(reducers.transient).toHaveBeenCalledTimes(1)
   })
 
   it('should be possible for a transient reducer to alter state', () => {
     const store = getStore()
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.counter })
+    store.dispatch({ type: 'any-action' })
     expect(store.getState()).toBe(1)
   })
 
@@ -49,11 +50,11 @@ describe('transientEnhancer', () => {
     const store = getStore()
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(2)
-    expect(reducers.transient).toHaveBeenCalledTimes(1)
+    expect(reducers.transient).toHaveBeenCalledTimes(0)
 
     store.dispatch({ type: 'any-action' })
     expect(reducers.original).toHaveBeenCalledTimes(3)
-    expect(reducers.transient).toHaveBeenCalledTimes(2)
+    expect(reducers.transient).toHaveBeenCalledTimes(1)
   })
 
   it('should be possible to add multiple transient reducers', () => {
@@ -61,18 +62,22 @@ describe('transientEnhancer', () => {
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.counter })
     expect(reducers.original).toHaveBeenCalledTimes(3)
-    expect(reducers.transient).toHaveBeenCalledTimes(2)
-    expect(reducers.counter).toHaveBeenCalledTimes(1)
+    expect(reducers.transient).toHaveBeenCalledTimes(1)
+    expect(reducers.counter).toHaveBeenCalledTimes(0)
   })
 
   it('should be possible to remove transient reducers', () => {
     const store = getStore()
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(2)
+    expect(reducers.transient).toHaveBeenCalledTimes(0)
+
+    store.dispatch({ type: 'any-action' })
+    expect(reducers.original).toHaveBeenCalledTimes(3)
     expect(reducers.transient).toHaveBeenCalledTimes(1)
 
     store.dispatch({ type: REMOVE_REDUCER, reducer: reducers.transient })
-    expect(reducers.original).toHaveBeenCalledTimes(3)
+    expect(reducers.original).toHaveBeenCalledTimes(4)
     expect(reducers.transient).toHaveBeenCalledTimes(1)
   })
 
@@ -80,14 +85,18 @@ describe('transientEnhancer', () => {
     const store = getStore()
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(2)
-    expect(reducers.transient).toHaveBeenCalledTimes(1)
+    expect(reducers.transient).toHaveBeenCalledTimes(0)
 
-    store.dispatch({ type: REMOVE_REDUCER, reducer: reducers.transient })
+    store.dispatch({ type: 'any-action' })
     expect(reducers.original).toHaveBeenCalledTimes(3)
     expect(reducers.transient).toHaveBeenCalledTimes(1)
 
-    store.dispatch({ type: 'any-action' })
+    store.dispatch({ type: REMOVE_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(4)
+    expect(reducers.transient).toHaveBeenCalledTimes(1)
+
+    store.dispatch({ type: 'any-action' })
+    expect(reducers.original).toHaveBeenCalledTimes(5)
     expect(reducers.transient).toHaveBeenCalledTimes(1)
   })
 
@@ -97,12 +106,12 @@ describe('transientEnhancer', () => {
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.transient })
     store.dispatch({ type: ADD_REDUCER, reducer: reducers.counter })
     expect(reducers.original).toHaveBeenCalledTimes(3)
-    expect(reducers.transient).toHaveBeenCalledTimes(2)
-    expect(reducers.counter).toHaveBeenCalledTimes(1)
+    expect(reducers.transient).toHaveBeenCalledTimes(1)
+    expect(reducers.counter).toHaveBeenCalledTimes(0)
 
     store.dispatch({ type: REMOVE_REDUCER, reducer: reducers.transient })
     expect(reducers.original).toHaveBeenCalledTimes(4)
-    expect(reducers.transient).toHaveBeenCalledTimes(2)
-    expect(reducers.counter).toHaveBeenCalledTimes(2)
+    expect(reducers.transient).toHaveBeenCalledTimes(1)
+    expect(reducers.counter).toHaveBeenCalledTimes(1)
   })
 })
