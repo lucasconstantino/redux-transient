@@ -74,6 +74,7 @@ On your component, connect a transient reducer as such:
 
 ```js
 import React from 'react'
+import { withReducer } from 'redux-transient/lib/withReducer'
 
 const MyComponent = () => <p>My component content.</p>
 
