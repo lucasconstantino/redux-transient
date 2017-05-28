@@ -1,7 +1,7 @@
 import { Component, createElement } from 'react'
 import { connect } from 'react-redux'
 
-import { ADD_REDUCER, REMOVE_REDUCER } from './transient-enhancer'
+import { addReducer, removeReducer } from './transient-enhancer'
 
 /**
  * HoC factory for a transient reducer connected component.
@@ -15,11 +15,11 @@ export const withReducer = reducer => WrappedComponent => connect()(class WithRe
   }
 
   componentWillMount () {
-    this.props.dispatch({ type: ADD_REDUCER, reducer: this.reducer })
+    this.props.dispatch(addReducer(this.reducer))
   }
 
   componentWillUnmount () {
-    this.props.dispatch({ type: REMOVE_REDUCER, reducer: this.reducer })
+    this.props.dispatch(removeReducer(this.reducer))
   }
 
   render () {

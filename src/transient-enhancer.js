@@ -1,6 +1,10 @@
 export const ADD_REDUCER = '@transient-react-reducer/ADD_REDUCER'
 export const REMOVE_REDUCER = '@transient-react-reducer/REMOVE_REDUCER'
 
+// Action creators.
+export const addReducer = (reducer, options = {}) => ({ ...options, reducer, type: ADD_REDUCER })
+export const removeReducer = (reducer, options = {}) => ({ ...options, reducer, type: REMOVE_REDUCER })
+
 /**
  * Transient reducer store enhancer.
  * Enhances the store to accept transient reducer adding/removing

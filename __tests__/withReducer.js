@@ -65,7 +65,7 @@ describe('withReducer', () => {
     expect(reducers.transient).toHaveBeenCalledWith(state, action, WithReducer.props())
   })
 
-  it.only('should add multiple transient reducers', () => {
+  it('should add multiple transient reducers', () => {
     const { store } = build((
       <div>
         <ConnectedComponent foo={ 'a' } />
