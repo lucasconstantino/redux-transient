@@ -24,7 +24,7 @@ To facilitate it's usage with React, which was my original need, `redux-transien
 
 ```js
 import { createStore } from 'redux'
-import { enhancer } from 'redux-transient'
+import { enhancer, addReducer } from 'redux-transient'
 
 // Basic reducers to 'increase' and 'decrease' a numeric state.
 const increaseReducer = (state, { type }) => type === 'increase' ? ++state : state
