@@ -50,7 +50,8 @@
   "keywords": [
     "redux",
     "react",
-    "reducer"
+    "reducer",
+    "enhancer"
   ],
   "bugs": {
     "url": "https://github.com/lucasconstantino/transient-reducers/issues"
