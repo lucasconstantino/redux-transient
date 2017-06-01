@@ -1,16 +1,19 @@
 import {
   ADD_REDUCER,
   REMOVE_REDUCER,
+  addReducer,
+  removeReducer,
   transientEnhancer,
 } from '../src/transient-enhancer'
 
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 
 describe('transientEnhancer', () => {
   const reducers = {
     original: jest.fn(v => v),
     transient: jest.fn(v => v),
-    counter: jest.fn(v => ++v),
+    counter: jest.fn((v = 0) => ++v),
+    timestamp: jest.fn(() => new Date().getTime()),
   }
   const getStore = () => createStore(reducers.original, 0, transientEnhancer)
 
@@ -159,5 +162,34 @@ describe('transientEnhancer', () => {
     expect(reducers.original).toHaveBeenCalledTimes(4)
     expect(reducers.transient).toHaveBeenCalledTimes(1)
     expect(reducers.counter).toHaveBeenCalledTimes(1)
+  })
+
+  describe('[integration] redux/combineReducers', () => {
+    const reducer = combineReducers({
+      counter: reducers.counter,
+      timestamp: reducers.timestamp,
+    })
+    const getStore = () => createStore(reducer, {}, transientEnhancer)
+
+    it('should work with combineReducers', () => {
+      const store = getStore()
+      expect(reducers.counter).toHaveBeenCalledTimes(1)
+      expect(reducers.timestamp).toHaveBeenCalledTimes(1)
+      expect(store.getState()).toHaveProperty('counter', 1)
+
+      store.dispatch(addReducer(reducers.transient))
+
+      expect(reducers.counter).toHaveBeenCalledTimes(2)
+      expect(reducers.timestamp).toHaveBeenCalledTimes(2)
+      expect(reducers.transient).toHaveBeenCalledTimes(0)
+      expect(store.getState()).toHaveProperty('counter', 2)
+
+      store.dispatch({ type: 'any' })
+
+      expect(reducers.counter).toHaveBeenCalledTimes(3)
+      expect(reducers.timestamp).toHaveBeenCalledTimes(3)
+      expect(reducers.transient).toHaveBeenCalledTimes(1)
+      expect(store.getState()).toHaveProperty('counter', 3)
+    })
   })
 })
