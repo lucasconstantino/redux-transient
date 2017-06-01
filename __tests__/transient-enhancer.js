@@ -2,11 +2,10 @@ import {
   ADD_REDUCER,
   REMOVE_REDUCER,
   addReducer,
-  removeReducer,
   transientEnhancer,
 } from '../src/transient-enhancer'
 
-import { createStore, combineReducers } from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 
 describe('transientEnhancer', () => {
   const reducers = {
@@ -190,6 +189,30 @@ describe('transientEnhancer', () => {
       expect(reducers.timestamp).toHaveBeenCalledTimes(3)
       expect(reducers.transient).toHaveBeenCalledTimes(1)
       expect(store.getState()).toHaveProperty('counter', 3)
+    })
+  })
+
+  describe('[integration] redux/applyMiddleware', () => {
+    let watch
+    const middleware = store => next => {
+      watch = jest.fn(action => next(action))
+      return watch
+    }
+
+    const getStore = () => createStore(reducers.original, {}, compose(
+      applyMiddleware(middleware),
+      transientEnhancer
+    ))
+
+    it('should work with applyMiddleware', () => {
+      const store = getStore()
+
+      store.dispatch(addReducer(reducers.transient))
+      expect(watch).toHaveBeenCalledTimes(1)
+
+      store.dispatch({ type: 'any' })
+      expect(watch).toHaveBeenCalledTimes(2)
+      expect(reducers.transient).toHaveBeenCalledTimes(1)
     })
   })
 })
