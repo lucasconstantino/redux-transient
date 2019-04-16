@@ -1,4 +1,4 @@
-# Redux Transient [![Build Status](https://travis-ci.org/lucasconstantino/redux-transient.svg?branch=master)](https://travis-ci.org/lucasconstantino/redux-transient) [![sponsored by Taller](https://raw.githubusercontent.com/TallerWebSolutions/tallerwebsolutions.github.io/master/sponsored-by-taller.png)](https://taller.net.br/en/)
+# Redux Transient [![Build Status](https://travis-ci.org/lucasconstantino/redux-transient.svg?branch=master)](https://travis-ci.org/lucasconstantino/redux-transient) [![sponsored by Taller](https://raw.githubusercontent.com/TallerWebSolutions/tallerwebsolutions.github.io/master/sponsored-by-taller.png)](https://taller.net.br/en/) [![Greenkeeper badge](https://badges.greenkeeper.io/lucasconstantino/redux-transient.svg)](https://greenkeeper.io/)
 
 > Transient reducers for Redux
 
